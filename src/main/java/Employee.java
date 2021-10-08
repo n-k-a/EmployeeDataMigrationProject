@@ -93,12 +93,12 @@ public class Employee implements Comparable<Employee> {
         this.salary = salary;
     }
 
-    public Employee(int id, String prefix, String first_Name, String last_Name, String middle_initial, char gender, String email, Date date_Of_Birth, Date date_Of_Joining, int salary) {
+    public Employee(int id, String prefix, String first_Name, String middle_initial,String last_Name, char gender, String email, Date date_Of_Birth, Date date_Of_Joining, int salary) {
         this.id = id;
         this.prefix = prefix;
         this.first_Name = first_Name;
-        this.last_Name = last_Name;
         this.middle_initial = middle_initial;
+        this.last_Name = last_Name;
         this.gender = gender;
         this.email = email;
         this.date_Of_Birth = date_Of_Birth;
@@ -112,8 +112,8 @@ public class Employee implements Comparable<Employee> {
                 "id=" + id +
                 ", prefix='" + prefix + '\'' +
                 ", first_Name='" + first_Name + '\'' +
-                ", last_Name='" + last_Name + '\'' +
                 ", middle_initial='" + middle_initial + '\'' +
+                ", last_Name='" + last_Name + '\'' +
                 ", gender=" + gender +
                 ", email='" + email + '\'' +
                 ", date_Of_Birth=" + date_Of_Birth +
@@ -124,19 +124,21 @@ public class Employee implements Comparable<Employee> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        o = (Employee)o;
+        if (this== o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && gender == employee.gender && salary == employee.salary && Objects.equals(prefix, employee.prefix) && Objects.equals(first_Name, employee.first_Name) && Objects.equals(last_Name, employee.last_Name) && Objects.equals(middle_initial, employee.middle_initial) && Objects.equals(email, employee.email) && Objects.equals(date_Of_Birth, employee.date_Of_Birth) && Objects.equals(date_Of_Joining, employee.date_Of_Joining);
+        return id == employee.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, prefix, first_Name, last_Name, middle_initial, gender, email, date_Of_Birth, date_Of_Joining, salary);
+        return Objects.hash(id);
     }
 
     @Override
     public int compareTo(Employee o) {
-        return 0;
+        return this.compareTo(o);
+
     }
 }

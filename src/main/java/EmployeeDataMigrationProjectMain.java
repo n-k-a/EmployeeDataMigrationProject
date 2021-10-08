@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -27,7 +26,23 @@ public class EmployeeDataMigrationProjectMain {
                 //   System.out.println(line);}
 
             }
-            conflictingEmployeeList = dupeCheck(employeeList);
+            System.out.println(employeeList.size()+"before");
+            HashSet<Employee>  employeeSet = new HashSet<>();
+            for (Employee e : employeeList){
+
+                    employeeSet.add(e);
+
+
+            }
+            conflictingEmployeeList= dupeCheck(employeeList,employeeSet);
+            employeeList.removeAllElements();
+            employeeList.addAll(employeeSet);
+
+            System.out.println(employeeList.size()+"after");
+            System.out.println(conflictingEmployeeList.size()+"after for conflict");
+
+
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -37,9 +52,9 @@ public class EmployeeDataMigrationProjectMain {
             e.printStackTrace();
         }
 
-        //System.out.println(employeeList.get(1));
+        System.out.println(employeeList.get(0) +"test for working csv pull");
 
-        //System.out.println(conflictingEmployeeList.get(0));
+        System.out.println(conflictingEmployeeList.get(0)+ "test for working cleanup with dupe");
 
 
 
@@ -54,18 +69,15 @@ public class EmployeeDataMigrationProjectMain {
 
 
     }
-    public static Vector<Employee>  dupeCheck(Vector<Employee> arrlist){
-        Vector<Employee> conflictingEmployeeList = new Vector<>();
-        Set<Employee>  employeeSet = new HashSet<>();
-        for (Employee e : arrlist){
-            if (employeeSet.add(e) == false)
-            {
-                conflictingEmployeeList.add(e);
-                System.out.println(e);
-            }
-        }
 
-return conflictingEmployeeList;
+    public static void emailCheck(){
+
+    }
+    public static Vector<Employee> dupeCheck(Vector<Employee> a, HashSet<Employee> b){
+         a.retainAll( b);
+         return a;
+
+
     }
 
 }
