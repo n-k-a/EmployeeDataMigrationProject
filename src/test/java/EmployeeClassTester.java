@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
-import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,32 +35,16 @@ public class EmployeeClassTester {
         assertTrue(e1.equals(e2));
 
     }
-    /*
-    @Test
-    public void checkArrEmpIDEquals(){
-        Vector<Employee> testArr = new Vector<>();
-        Employee e1 = new Employee(1234,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        Employee e2 = new Employee(1233,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        Employee e3 = new Employee(1234,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        Employee e4 = new Employee(1233,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        Employee e5 = new Employee(1234,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        Employee e6 = new Employee(1233,"Mr.","Naruhodo", "P", "Ryonusuke",'n', "RNaruhodo@rmail.jp",sqlDate, sqlDate, 10000 );
-        testArr.add(e1);
-        testArr.add(e2);
-        testArr.add(e3);
-        testArr.add(e4);
-        testArr.add(e5);
-        testArr.add(e6);
 
-
-    }*/
     @Test
     public void checkRegexEmail(){
         long now = System.currentTimeMillis();
         Date sqlDate = new Date(now);
         Employee e1 = new Employee(1234,"Mrs.","Danae", "P", "Batchelder",'F', "danae.batchelder@msn.com",sqlDate, sqlDate, 10000 );
-        RegrexApplier re = new RegrexApplier();
+        RegexApplier re = new RegexApplier();
         assertTrue(re.validateEmail(e1.getEmail()));
+        assertFalse(re.validateEmail("Nardsssdfdsdsddwsdsd.nnnn"));
+
 
     }
     @Test
@@ -69,10 +52,23 @@ public class EmployeeClassTester {
         long now = System.currentTimeMillis();
         Date sqlDate = new Date(now);
         Employee e1 = new Employee(1234,"Mrs.","Danae", "P", "Batchelder",'F', "danae.batchelder@msn.com",sqlDate, sqlDate, 10000 );
-        RegrexApplier re = new RegrexApplier();
+        RegexApplier re = new RegexApplier();
         assertTrue(re.validateName(e1.getFirst_Name()));
-        assertTrue(re.validateName(e1.getLast_Name()));
-        assertTrue(re.validateName(e1.getMiddle_initial()));
+        assertFalse(re.validateName("3344ffss"));
+        assertFalse(re.validateName("....."));
+
+    }
+    @Test
+    public void checkRegexInitial(){
+        long now = System.currentTimeMillis();
+        Date sqlDate = new Date(now);
+        Employee e1 = new Employee(1234,"Mrs.","Danae", "P", "Batchelder",'F', "danae.batchelder@msn.com",sqlDate, sqlDate, 10000 );
+        Employee e2 = new Employee(1234,"Mrs.","Danae", "PN", "Batchelder",'F', "danae.batchelder@msn.com",sqlDate, sqlDate, 10000 );
+        Employee e3 = new Employee(1234,"Mrs.","Danae", "6", "Batchelder",'F', "danae.batchelder@msn.com",sqlDate, sqlDate, 10000 );
+
+        RegexApplier re = new RegexApplier();
+        assertTrue(re.validateMiddleInitial(e1.getMiddle_initial()));
+        assertFalse(re.validateMiddleInitial(e3.getMiddle_initial()));
 
     }
 }

@@ -1,26 +1,41 @@
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Vector;
 
 public class jdbcDriver {
-private void transferToDB(Vector<Employee> el){
-    try(Connection conn = DriverManager.getConnection("jdbc:sqlite:EmployeeRecords.db")){
+public void transferToDB(Vector<Employee> el){
+    String connection = "jdbc:sqlite:EmployeeRecords.db";
+    String sql = "CREATE TABLE Employee("+
+            "                ID  integer PRIMARY KEY,\n" +
+            "                Prefix text NOT NULL,\n" +
+            "                FirstName text NOT NULL,\n" +
+            "                MiddleInitial text NOT NULL,\n" +
+            "                LastName text NOT NULL,\n" +
+            "                Gender text NOT NULL,\n" +
+            "                Email text NOT NULL,\n" +
+            "                DateOfBirth datetime NOT NULL,\n" +
+            "                DateOfJoining datetime NOT NULL,\n" +
+            "                Salary(£) integer NOT NULL\n)";
+    try(Connection conn = DriverManager.getConnection(connection)){
         Statement statement = conn.createStatement();
         statement.executeUpdate("DROP TABLE IF EXISTS Employee");
-        statement.executeUpdate("CREATE TABLE Employee( " +
-                "ID INTEGER NOT NULL PRIMARY KEY,\n" +
-                "Prefix VARCHAR(5) NOT NULL,\n" +
-                "FirstName VARCHAR(255) NOT NULL,\n" +
-                "MiddleInitial VARCHAR(1) NOT NULL,\n"  +
-                "LastName VARCHAR(255) NOT NULL,\n"+
-                "Gender VARCHAR(1) NOT NULL,\n" +
-                "Email VARCHAR(255) NOT NULL,\n" +
-                "DateOfBirth DATETIME NOT NULL,\n" +
-                "DateOfJoining DATETIME NOT NULL,\n" +
-                "Salary(£) INTEGER NOT NULL\n");
+
+        statement.executeUpdate("CREATE TABLE Employee("+
+                "                ID integer primary key not null," +
+                "                Prefix text not null," +
+                "                FirstName text not null," +
+                "                MiddleInitial text not null," +
+                "                LastName text not null," +
+                "                Gender text not null," +
+                "                Email text not null," +
+                "                DateOfBirth date not null," +
+                "                DateOfJoining date not null," +
+                "                Salary integer not null"+");");
         PreparedStatement preparedStatement
                 = conn.prepareStatement("INSERT INTO EMPLOYEE(" +
-                "ID,Prefix,FirstName, MiddleInitial, LastName," +
-                "Gender, Email,DateOfBirth,DateOfJoining,Salary(£)" +
+                "ID, Prefix, FirstName, MiddleInitial, LastName," +
+                "Gender, Email, DateOfBirth,DateOfJoining, Salary)" +
                 "VALUES(?, ?, ?, ?, ?, ?,?,?,?,?)");
         for (Employee e: el) {
 
@@ -39,7 +54,7 @@ private void transferToDB(Vector<Employee> el){
         }
         statement.close();
         conn.close();
-
+        System.out.println("Success!");
 
     }
     catch(SQLException e){
@@ -47,4 +62,5 @@ private void transferToDB(Vector<Employee> el){
 
     }
 }
+/*public Vector<Employee> returnAllReccords(Vector<Employee> el,){}*/
 }

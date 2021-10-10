@@ -11,6 +11,13 @@ public class EmployeeDataMigrationProjectMain {
     public static void main(String[] args) {
         Vector<Employee> employeeList = new Vector<>();
         Vector<Employee> conflictingEmployeeList = new Vector<>();
+        Vector<Employee> nullValueEmployeeList = new Vector<>();
+        Vector<Employee> failedRegexValueEmployeeList = new Vector<>();
+        RegexApplier re = new RegexApplier();
+        jdbcDriver driver = new jdbcDriver();
+
+
+
 
         String line = null;
         String[] data = null;
@@ -30,17 +37,33 @@ public class EmployeeDataMigrationProjectMain {
             HashSet<Employee>  employeeSet = new HashSet<>();
             for (Employee e : employeeList){
 
+                if(employeeSet.contains(e)){
+                    conflictingEmployeeList.add(e);
+                }
                     employeeSet.add(e);
 
 
             }
-            conflictingEmployeeList= dupeCheck(employeeList,employeeSet);
             employeeList.removeAllElements();
             employeeList.addAll(employeeSet);
 
             System.out.println(employeeList.size()+"after");
             System.out.println(conflictingEmployeeList.size()+"after for conflict");
+     employeeSet.clear();
+           for(Employee e: employeeList){
+                if(!re.validateEmail(e.getEmail())||!re.validateName(e.getFirst_Name()) ||
+                        !re.validateName(e.getLast_Name()) ||!re.validateMiddleInitial(e.getMiddle_initial())){
+                    failedRegexValueEmployeeList.add(e);
+                }
+                else{
+                    employeeSet.add(e);
 
+                }
+            }
+           employeeList.clear();
+           employeeList.addAll(employeeSet);
+            System.out.println(employeeList.size()+"after regex");
+            System.out.println(failedRegexValueEmployeeList.size()+"after regex for conflict");
 
 
 
@@ -55,6 +78,8 @@ public class EmployeeDataMigrationProjectMain {
         System.out.println(employeeList.get(0) +"test for working csv pull");
 
         System.out.println(conflictingEmployeeList.get(0)+ "test for working cleanup with dupe");
+        //System.out.println(failedRegexValueEmployeeList.get(0)+ "test for working cleanup with regex");
+        driver.transferToDB(employeeList);
 
 
 
@@ -70,15 +95,6 @@ public class EmployeeDataMigrationProjectMain {
 
     }
 
-    public static void emailCheck(){
-
-    }
-    public static Vector<Employee> dupeCheck(Vector<Employee> a, HashSet<Employee> b){
-         a.retainAll( b);
-         return a;
-
-
-    }
 
 }
 
