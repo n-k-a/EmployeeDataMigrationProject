@@ -105,6 +105,9 @@ public class Employee implements Comparable<Employee> {
         this.date_Of_Joining = date_Of_Joining;
         this.salary = salary;
     }
+    public Employee(){
+
+    }
 
     @Override
     public String toString() {
