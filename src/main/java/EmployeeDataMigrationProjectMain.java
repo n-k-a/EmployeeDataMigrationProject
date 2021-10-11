@@ -1,6 +1,10 @@
+import org.apache.log4j.Logger;
+
 import java.util.Scanner;
 
 public class EmployeeDataMigrationProjectMain {
+    private static Logger logger = Logger.getLogger("My Application Logger");
+
     public static void main(String[] args) {
 
          CSVHandler h1 = new CSVHandler();
@@ -18,6 +22,7 @@ public class EmployeeDataMigrationProjectMain {
 
         }
         catch (InterruptedException e){
+            logger.trace(e);
             e.printStackTrace();
         }
         System.out.println("Threads done");

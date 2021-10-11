@@ -1,3 +1,5 @@
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,7 +11,8 @@ import java.util.HashSet;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-public class CSVMigrate{
+public class EmployeeRetrieval {
+    private static Logger logger = Logger.getLogger("My Application Logger");
 
 //name for the accepted records
     private String filename;
@@ -24,15 +27,16 @@ public class CSVMigrate{
 
 
 
-    Vector<Employee> employeeList = new Vector<>();
-    Vector<Employee> conflictingEmployeeList = new Vector<>();
-    Vector<Employee> nullValueEmployeeList = new Vector<>();
-    Vector<Employee> failedRegexValueEmployeeList = new Vector<>();
-    RegexApplier re = new RegexApplier();
-    jdbcDriver driver = new jdbcDriver();
+    private Vector<Employee> employeeList = new Vector<>();
+    private Vector<Employee> conflictingEmployeeList = new Vector<>();
+    private Vector<Employee> nullValueEmployeeList = new Vector<>();
+    private Vector<Employee> failedRegexValueEmployeeList = new Vector<>();
+    private RegexApplier re = new RegexApplier();
+    private jdbcDriver driver = new jdbcDriver();
 
 //method to take from CSV
 public void transferFromCSV(){
+
     String line = null;
     String[] data = null;
 
@@ -55,12 +59,15 @@ public void transferFromCSV(){
 
     } catch (
             FileNotFoundException e) {
+        logger.trace(e);
         e.printStackTrace();
     } catch (
             IOException e) {
+        logger.trace(e);
         e.printStackTrace();
     } catch (
             ParseException e) {
+        logger.trace(e);
         e.printStackTrace();
     }
 
@@ -70,16 +77,18 @@ public void transferFromCSV(){
 }//Creates a new DB and populates it
 public void runPopulateDB(){
     driver.transferToDB(employeeList);
-
+}
+public void runInsertIntoDB(){
+    driver.addEmployeeListToDB(employeeList);
 }
 //retrieves a DB record who has a matching ID
-    public Employee retrieveDB(int id){
+    public Employee retrieveDBID(int id){
         Employee results= driver.returnIDRecord(id);
             System.out.println(results.toString());
             return results;
     }
     //retrieves a DB record who has a matching Last name
-    public Vector<Employee> retrieveDB(String LN){
+    public Vector<Employee> retrieveDBLastName(String LN){
         Vector<Employee> results= driver.returnLNRecords(LN);
         for (Employee e: results){
         System.out.println(e.toString());

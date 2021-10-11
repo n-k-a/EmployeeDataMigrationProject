@@ -1,3 +1,6 @@
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -9,17 +12,21 @@ import java.util.Vector;
 public class jdbcDriver {
     private Connection conn;
 private String connection = "jdbc:sqlite:EmployeeRecords.db";
+    private static Logger logger = Logger.getLogger("My Application Logger");
 
     public void connectToDB(){
+        PropertyConfigurator.configure("log4j.properties");
+
         try{
             conn = DriverManager.getConnection(connection);
         }
         catch(SQLException e){
+            logger.trace(e);
             e.printStackTrace();
 
         }
     }
-public void transferToDB(Vector<Employee> el){
+public  synchronized void transferToDB(Vector<Employee> el){
     try{
         connectToDB();
         Statement statement = conn.createStatement();
@@ -69,7 +76,7 @@ public void transferToDB(Vector<Employee> el){
 }
 //looks for employees with the last name of that given param
     //returns a list as Names are less unique than the PK.
-    public Vector<Employee> returnLNRecords(String LN){
+    public synchronized Vector<Employee> returnLNRecords(String LN){
         Vector<Employee> resultEmployee = new Vector<>();
         String connection = "jdbc:sqlite:EmployeeRecords.db";
         String query = "SELECT * FROM Employee WHERE LastName = ?";
@@ -97,13 +104,14 @@ public void transferToDB(Vector<Employee> el){
             }
         }
         catch(SQLException e){
+            logger.trace(e);
             e.printStackTrace();
 
         }
         //returns employee
         return resultEmployee;
     }
-public Employee returnIDRecord(int id){
+public synchronized Employee returnIDRecord(int id){
     Employee resultEmployee = new Employee();
     String connection = "jdbc:sqlite:EmployeeRecords.db";
     String query = "SELECT * FROM Employee WHERE ID = ?";
@@ -131,6 +139,7 @@ public Employee returnIDRecord(int id){
         }
     }
     catch(SQLException e){
+        logger.trace(e);
         e.printStackTrace();
 
     }
@@ -141,21 +150,9 @@ public Employee returnIDRecord(int id){
 
 
 //version of transferToDB but without the drop db method
-    public void addEmployeeListToDB(Vector<Employee> el){
-        String sql = "CREATE TABLE Employee("+
-                "                ID  integer PRIMARY KEY,\n" +
-                "                Prefix text NOT NULL,\n" +
-                "                FirstName text NOT NULL,\n" +
-                "                MiddleInitial text NOT NULL,\n" +
-                "                LastName text NOT NULL,\n" +
-                "                Gender text NOT NULL,\n" +
-                "                Email text NOT NULL,\n" +
-                "                DateOfBirth datetime NOT NULL,\n" +
-                "                DateOfJoining datetime NOT NULL,\n" +
-                "                Salary(£) integer NOT NULL\n)";
+    public synchronized void addEmployeeListToDB(Vector<Employee> el){
         try{
-            Statement statement = conn.createStatement();
-
+            connectToDB();
             PreparedStatement preparedStatement
                     = conn.prepareStatement("INSERT INTO EMPLOYEE(" +
                     "ID, Prefix, FirstName, MiddleInitial, LastName," +
@@ -173,15 +170,17 @@ public Employee returnIDRecord(int id){
                 preparedStatement.setString(8,String.valueOf(e.getDate_Of_Birth()));
                 preparedStatement.setString(9,String.valueOf(e.getDate_Of_Joining()));
                 preparedStatement.setString(10,String.valueOf(e.getSalary()));
-                preparedStatement.execute();
+                preparedStatement.addBatch();
 
             }
-            statement.close();
+            preparedStatement.executeBatch();
+            preparedStatement.close();
             conn.close();
             System.out.println("Success!");
 
         }
         catch(SQLException e){
+            logger.trace(e);
             e.printStackTrace();
 
         }
