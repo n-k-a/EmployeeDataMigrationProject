@@ -27,34 +27,34 @@ Here are the steps:
 
 ## Running the project
 In order to run this project, you need:
--Java JDK 14
--DB Browser/SQLite as this was the db method used for this project
--the .csv files "EmployeeRecordsLarge" and "EmployeeRecords"
--a .db File
+- Java JDK 14
+- DB Browser/SQLite as this was the db method used for this project
+- the .csv files "EmployeeRecordsLarge" and "EmployeeRecords"
+- a .db File
 To run the project, make sure that "EmployeeDataMigrationProjectMain" is selected as the file to run.
 Once these steps have been resolved, all that is needed to be done is to follow the steps given by the console line in order to execute what is suggested.
 
 ##Testing
 There are tests done for this project in order to test the functionality.
--checkRegexInitial, this checks how the regex handles the middle initial and sees whether it assets true a normal initial value, and assets false a numerical one
--checkRegexName, which checks if the regex check works for names, with the test seeing whether it asserts true for a normal name, and assets false for a numeric flled string or punctuation using only
--checkRegexEmail, which checks if the email matches the standard "xasdd@dsd.dsd" format, and checks with a correct email and one which doesn't have an '@'.
--checkEmpIDNotEquals uses two almost identical Employee classes outside of the IDs being different, and sees whether an assertfalse happens
--checkEmpIDEquals, checks whether it recognises two objects which only share the same ID.
--checkEmpEquals, which checks whether the equals() method has been overwritten and can compare two identical objects
+- checkRegexInitial, this checks how the regex handles the middle initial and sees whether it assets true a normal initial value, and assets false a numerical one
+- checkRegexName, which checks if the regex check works for names, with the test seeing whether it asserts true for a normal name, and assets false for a numeric flled string or punctuation using only
+- checkRegexEmail, which checks if the email matches the standard "xasdd@dsd.dsd" format, and checks with a correct email and one which doesn't have an '@'.
+- checkEmpIDNotEquals uses two almost identical Employee classes outside of the IDs being different, and sees whether an assertfalse happens
+- checkEmpIDEquals, checks whether it recognises two objects which only share the same ID.
+- checkEmpEquals, which checks whether the equals() method has been overwritten and can compare two identical objects
 
 ## What could be done to improve it
--More unit testing for threads and db related processes, as this would've helped with testing.
--The usage of a DB connection pool instead of just a method which calls the Connection, as this is more efficient. DataSources mainly.
--Better logging implementation. The current state is barebones and faulty
--More testing with the UI. This was one of the last things developed and this lacks some of the things that would've made it more efficient (such as a proper model/view/controller) or tests for failed inputs
--Better methods with the SQL method execution. A stronger way of utilising both first and last name as search parameters is a start
--Proper package creation.
--Implementation of Lambdas. Time constraints limited this section from being properly done.
--More regex tests for date and salary and Prefixes
--Proper tests with null values.
--Issue with drop being run in one thread and insert in another leading to errors in the second due to null values
--Issues with scanner inputs and prompts being msessed up due to the way that threads were integrated
--adding more threads.
--Understanding thread concepts as to prevent issues such as the retrieval of null values from happening.
+- More unit testing for threads and db related processes, as this would've helped with testing.
+- The usage of a DB connection pool instead of just a method which calls the Connection, as this is more efficient. DataSources mainly.
+- Better logging implementation. The current state is barebones and faulty
+- More testing with the UI. This was one of the last things developed and this lacks some of the things that would've made it more efficient (such as a proper model/view/controller) or tests for failed inputs
+- Better methods with the SQL method execution. A stronger way of utilising both first and last name as search parameters is a start
+- Proper package creation.
+- Implementation of Lambdas. Time constraints limited this section from being properly done.
+- More regex tests for date and salary and Prefixes
+- Proper tests with null values.
+- Issue with drop being run in one thread and insert in another leading to errors in the second due to null values
+- Issues with scanner inputs and prompts being msessed up due to the way that threads were integrated
+- adding more threads.
+- Understanding thread concepts as to prevent issues such as the retrieval of null values from happening.
 If there are issues with this commit, please look at the last one with no threads at all.
